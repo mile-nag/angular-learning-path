@@ -1,6 +1,38 @@
-<h3 class="text-warning">Listado de productos:</h3>
+<div class="container mt-3">
+  <h3 class="text-warning">Listado de productos</h3>
+  <ul class="list-group w-50 mx-auto">
+    @for(producto of productos; track producto){
+    <li class="list-group-item text-center">
+      {{ producto.descripcion }}, ${{ producto.precio }}
+    </li>
+    }
+  </ul>
 
-<app-producto/>
-<app-producto/>
-<app-producto/>
+  <h5 class="text-success mt-3">Agregar nuevo producto</h5>
 
+  <form
+    class="d-flex justify-content-between align-items-center my-4 w-50 mx-auto"
+  >
+    <input
+      type="text"
+      id="descripcion"
+      name="descripcion"
+      placeholder="Descripcion del producto"
+      class="form-control me-2 w-75"
+      autocomplete="off"
+      [(ngModel)]="descripcionInput"
+    />
+
+    <input
+      type="number"
+      id="precio"
+      name="precio"
+      placeholder="Precio del producto"
+      class="form-control me-2 w-25"
+      autocomplete="off"
+      [(ngModel)]="precioInput"
+    />
+
+    <button type="submit" class="btn btn-primary" (click)="agregarProducto()">Agregar</button>
+  </form>
+</div>

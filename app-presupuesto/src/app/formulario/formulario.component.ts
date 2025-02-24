@@ -42,5 +42,8 @@ export class FormularioComponent {
     } else {
       console.log('No se ha ingresado un monto o descripción válido');
     }
+
+    this.descripcionInput = '';
+    this.montoInput = 0;
   }
 }

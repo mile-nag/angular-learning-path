@@ -1,35 +1,21 @@
 import { Component } from '@angular/core';
 import { ProductoComponent } from '../producto/producto.component';
 import { Producto } from '../producto/producto.model';
-import { FormsModule } from '@angular/forms';
-
+import { FormularioComponent } from '../formulario/formulario.component';
 @Component({
   selector: 'app-listado-productos',
-  imports: [ProductoComponent, FormsModule],
+  standalone: true,
+  imports: [ProductoComponent, FormularioComponent],
   templateUrl: './listado-productos.component.html',
-  styleUrl: './listado-productos.component.css',
+  styleUrls: ['./listado-productos.component.css'],
 })
 export class ListadoProductosComponent {
   productos: Producto[] = [
-    new Producto('Pantalon', 130),
-    new Producto('Camisa', 200),
-    new Producto('Remera', 100),
+    new Producto('Pantalón', 130.0),
+    new Producto('Camisa', 80.0),
+    new Producto('Playera', 50.0),
   ];
-
-  descripcionInput: string = '';
-  precioInput: number | null = null;
-
-  agregarProducto() {
-    if(this.descripcionInput.trim() === '' || this.precioInput == null || this.precioInput <= 0){
-      console.log('Debe ingresar una descripción y un precio válido');
-      return;
-    }
-    
-    const producto = new Producto(this.descripcionInput, this.precioInput);
-
+  agregarProducto(producto: Producto) {
     this.productos.push(producto);
-
-    this.descripcionInput ='';
-    this.precioInput = null;
   }
 }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ProductoComponent } from '../producto/producto.component';
 import { Producto } from '../producto/producto.model';
 import { FormularioComponent } from '../formulario/formulario.component';
+import { ProductoService } from '../producto.service';
 @Component({
   selector: 'app-listado-productos',
   standalone: true,
@@ -10,12 +11,12 @@ import { FormularioComponent } from '../formulario/formulario.component';
   styleUrls: ['./listado-productos.component.css'],
 })
 export class ListadoProductosComponent {
-  productos: Producto[] = [
-    new Producto('Pantalón', 130.0),
-    new Producto('Camisa', 80.0),
-    new Producto('Playera', 50.0),
-  ];
-  agregarProducto(producto: Producto) {
-    this.productos.push(producto);
+  productos: Producto[] = [];
+
+  constructor(private productoService: ProductoService){}
+
+  ngOnInit(){
+    //Inicializar los productos
+    this.productos = this.productoService.productos;
   }
 }

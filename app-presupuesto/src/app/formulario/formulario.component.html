@@ -1,1 +1,54 @@
-<p>formulario works!</p>
+<div class="row justify-content-center mt-4">
+  <div class="col-md-8">
+    <form class="row g-2" #f="ngForm" (ngSubmit)="f.form.valid && agregarMonto()">
+      <div class="col-auto">
+        <select (change)="tipoOperacion($event)"
+          class="form-select bg-success"
+          [ngClass]="{
+            'bg-success': tipo === 'ingresoOperacion',
+            'bg-danger': tipo === 'egresoOperacion'
+          }"
+        >
+          <option value="ingresoOperacion" selected>+</option>
+          <option value="egresoOperacion">-</option>
+        </select>
+      </div>
+      <div class="col">
+        <input
+          type="text"
+          class="form-control border-success"
+          placeholder="Descripción"
+          required
+          [(ngModel)]="descripcionInput" name="descripcionInput"
+          [ngClass]="{
+            'bg-success': tipo === 'ingresoOperacion',
+            'bg-danger': tipo === 'egresoOperacion'
+          }"
+        />
+      </div>
+      <div class="col-auto">
+        <input
+          type="number"
+          class="form-control border-success"
+          placeholder="Monto"
+          required
+          [(ngModel)]="montoInput" name="montoInput"
+          [ngClass]="{
+            'bg-success': tipo === 'ingresoOperacion',
+            'bg-danger': tipo === 'egresoOperacion'
+          }"
+        />
+      </div>
+      <div class="col-auto">
+        <button type="submit" class="btn"
+        [ngClass]="{
+            'bg-success': tipo === 'ingresoOperacion',
+            'bg-danger': tipo === 'egresoOperacion'
+          }"
+        >
+          <i class="bi bi-check-circle"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

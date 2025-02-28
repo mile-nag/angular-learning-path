@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Producto } from './producto/producto.model';
+import { LoginService } from './login.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,18 +10,24 @@ import { Producto } from './producto/producto.model';
 export class DatosService {
   url ='https://tienda-angular-909ba-default-rtdb.firebaseio.com/';
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+    private loginService: LoginService) { }
 
   listarProductos() : Observable<{[key: string]: Producto}> {
-    return this.httpClient.get<{[key: string]: Producto}>(this.url + 'datos.json');
+    const token = this.loginService.getIdToken();
+    const url_listar = `${this.url}datos.json?auth=${token}`;
+    return this.httpClient.get<{[key: string]: Producto}>(url_listar);
   }
 
   agregarProducto(producto: Producto): Observable<any> {
-    return this.httpClient.post(this.url + 'datos.json', producto);
+  const token = this.loginService.getIdToken();
+    const url_agregar = `${this.url}datos.json?auth=${token}`;
+    return this.httpClient.post(url_agregar, producto);
   }
 
   modificarProducto(producto: Producto, key: string): Observable<any> {
-    const url_modificar = `${this.url}datos/${key}.json`;
+  const token = this.loginService.getIdToken();
+    const url_modificar = `${this.url}datos/${key}.json?auth=${token}`;
     return this.httpClient.put(url_modificar, producto); //actualiza el producto
   }
 

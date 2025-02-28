@@ -7,7 +7,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
   providedIn: 'root',
 })
 export class LoginService {
-  token: string = '';
+  token: string | null = null;
 
   constructor(
     private router: Router,
@@ -29,8 +29,24 @@ export class LoginService {
       });
   }
 
-  getIdToken() {  
-   return this.token;
+  getIdToken() {
+    return this.token;
   }
-  
+
+  // Verifica si el usuario está autenticado
+  estaAutenticado() {
+    return this.token !== null;
+  }
+
+  // Cierra la sesión del usuario
+  logout() {
+    const auth = this.firebaseService.auth;
+    auth.signOut().then(() => {
+      this.token = null; // Elimina el token
+      this.router.navigate(['login']);
+    })
+    .catch((error) => {
+      console.error('Error al cerrar sesión: ', error);
+    });
+  }
 }

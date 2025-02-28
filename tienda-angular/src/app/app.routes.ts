@@ -5,10 +5,10 @@ import { ErrorComponent } from './error/error.component';
 
 export const routes: Routes = [
 
-  {path: '', component: ListadoProductosComponent}, //localhost:4200
-  {path: 'listado', component: ListadoProductosComponent}, //localhost:4200/listado
-  {path: 'agregar', component: FormularioComponent}, //localhost:4200/agregar
-  {path:'editar/:id', component: FormularioComponent}, //localhost:4200/editar:id}
+  {path: '', component: ListadoProductosComponent},
+  {path: 'listado', component: ListadoProductosComponent}, 
+  {path: 'agregar', component: FormularioComponent}, 
+  {path:'editar/:key', component: FormularioComponent}, 
   {path: '**', component: ErrorComponent} //Para manejar el error de una ruta no encontrada
 
 ];

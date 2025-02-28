@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './formulario.component.css',
 })
 export class FormularioComponent {
-  productoID: number | null = null;
+  keyProducto: string | null = null;
   descripcionInput: string = '';
   precioInput: number | null = null;
 
@@ -23,17 +23,22 @@ export class FormularioComponent {
   ) {}
 
   ngOnInit() {
-    // Verificar si el producto ya existe
-    const id = this.route.snapshot.paramMap.get('id');
+    // Suscribirse a la actualización de productos
+    this.productoService.productosActualizados.subscribe((productos) => {
+      const key = this.route.snapshot.paramMap.get('key');
 
-    if (id) {
-      const producto = this.productoService.getProductoById(Number(id));
-      if (producto) {
-        this.productoID = producto.id;
-        this.descripcionInput = producto.descripcion;
-        this.precioInput = producto.precio;
+      if (key) {
+        const producto = this.productoService.getProductoByKey(key);
+        if (producto) {
+          this.keyProducto = key;
+          this.descripcionInput = producto.descripcion;
+          this.precioInput = producto.precio;
+        }
       }
-    }
+    });
+
+    // Cargar productos si no están cargados
+    this.productoService.actualizarProductos();
   }
 
   guardarProducto(evento: Event) {
@@ -48,14 +53,14 @@ export class FormularioComponent {
       return;
     }
 
-    const producto = new Producto(this.productoID, this.descripcionInput, this.precioInput);
+    const producto = new Producto(this.descripcionInput, this.precioInput);
 
     //Agregar el producto usando el servicio
-    this.productoService.guardarProducto(producto);
+    this.productoService.guardarProducto(producto, this.keyProducto);
 
     //Limpiamos los campos del formulario y redirigimos al inicio
     this.limpiarCampos();
-    
+
     //Redirigir al inicio
     this.cancelar();
   }
@@ -65,17 +70,17 @@ export class FormularioComponent {
     this.router.navigate(['/']);
   }
 
-  eliminarProducto(){
-    if (this.productoID){
-      this.productoService.eliminarProducto(this.productoID);
+  eliminarProducto() {
+    if (this.keyProducto != null) {
+      this.productoService.eliminarProducto(this.keyProducto);
       this.limpiarCampos();
       this.cancelar(); // Redirige al listado (por ahora)
-    } 
+    }
   }
 
   //Limpiar los campos del formulario
-  limpiarCampos(){
-    this.productoID = null;
+  limpiarCampos() {
+    this.keyProducto = null;
     this.descripcionInput = '';
     this.precioInput = null;
   }
